@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>标准登陆页面</h2>
+	<h3>表单登录</h3>
+	<form action="/authentication/form" method="post">
+		<input type="text" name="username">
+		<br>
+		<input type="password" name="password">		
+		<br>
+		<input type="text" name="image_code">
+		<img alt="图形验证" src="/vlidate/image?code=4&&height=32">
+		<input type="checkbox" value="true" name="remember-me">  记住我 
+		<input type="submit" value="登录">
+	</form>
+	<h3>手机验证码登录</h3>
+	<form action="/authentication/mobile" method="post">
+		<input type="text" name="mobile" value="17316198888">、
+		<br>
+		<input type="text" name="sms_code">
+		<a href="/vlidate/sms?mobile=17316198888">点击发送验证码</a>
+		<input type="submit" value="登录">
+	</form>
+	<h2>社交登陆</h2>
+	<a href="/auth/qq">QQ</a>
+	<br>
+	<a href="/auth/wx">微信登录</a>
+</body>
+</html>
