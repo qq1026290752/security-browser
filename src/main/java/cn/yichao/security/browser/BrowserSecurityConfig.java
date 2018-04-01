@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -22,10 +20,11 @@ import org.springframework.stereotype.Component;
 
 import cn.yichao.security.browser.session.YichaoSessionInformationExpiredStrategy;
 import cn.yichao.security.core.authentication.mobile.SmsAuthentioncationSecurityConfig;
-import cn.yichao.security.core.authentication.mobile.SmsValidateCodeFiler;
 import cn.yichao.security.core.constant.ProjectConstant;
 import cn.yichao.security.core.properties.SecurityPeoperties;
+import cn.yichao.security.core.vlidate.ValidateCodeRepository;
 import cn.yichao.security.core.vlidate.core.ValidateCodeFiler;
+import cn.yichao.security.core.vlidate.core.sms.SmsValidateCodeFiler;
 @Component
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -48,6 +47,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
 	@Autowired
 	private LogoutSuccessHandler logoutSuccessHandler;
+	@Autowired
+	private ValidateCodeRepository validateCodeRepository;
 	
 	
 
@@ -84,8 +85,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 		 ValidateCodeFiler validateCodeFiler = new ValidateCodeFiler(); 
 		 validateCodeFiler.setYichaoAuthenticationFailuHandler(yichaoAuthenticationFailuHandler);
 		 validateCodeFiler.setSecurityPeoperties(securityPeoperties);
-		 //短信验证码
-		 SmsValidateCodeFiler smsValidateCodeFiler = new SmsValidateCodeFiler(); 
+		 //短信验证码 浏览器基于session开发
+		 SmsValidateCodeFiler smsValidateCodeFiler = new SmsValidateCodeFiler(validateCodeRepository); 
 		 smsValidateCodeFiler.setYichaoAuthenticationFailuHandler(yichaoAuthenticationFailuHandler);
 		 smsValidateCodeFiler.setSecurityPeoperties(securityPeoperties);
 		 //调用前置方法
@@ -137,7 +138,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 			 			,ProjectConstant.VALIDATE_URI_PREFIX + "*"
 			 			,securityPeoperties.getBrowser().getSignUpUrl()
 			 			,securityPeoperties.getSession().getSessoinInvalidPage()
-			 			,"/user/register")
+			 			,"/user/register","/social/user")
 			 	.permitAll()
 			 	.anyRequest()
 			 	.authenticated()

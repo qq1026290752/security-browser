@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import cn.yichao.security.browser.support.SocialUserInfo;
 import cn.yichao.security.core.constant.ProjectConstant;
 import cn.yichao.security.core.properties.SecurityPeoperties;
 import cn.yichao.security.core.support.SimpleResponse;
+import cn.yichao.security.core.support.SocialUserInfo;
 import lombok.extern.slf4j.Slf4j; 
 
 @RestController
@@ -62,7 +62,7 @@ public class BrowseSecurityControllor {
 		return new SimpleResponse("需要权限认证，请引导用户到登陆界面");
 	}
 	/**
-	 * 获取社交用户
+	 * 获取社交用户,在用户未完成注册的时候调用
 	 * @return
 	 */
 	@GetMapping("/social/user")
