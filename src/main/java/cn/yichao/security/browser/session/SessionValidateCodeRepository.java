@@ -7,13 +7,12 @@ import org.springframework.web.context.request.ServletWebRequest;
 import cn.yichao.security.core.vlidate.ValidateCode;
 import cn.yichao.security.core.vlidate.ValidateCodeRepository;
 
-@Component("validateCodeRepository")
+@Component("sessionCodeRepository")
 public class SessionValidateCodeRepository implements ValidateCodeRepository {
 	
 	private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();	
 	
 	@Override
-
 	public void save(ServletWebRequest request, ValidateCode validateCode, String validateCodeKey) {
 		sessionStrategy.setAttribute(request,validateCodeKey, validateCode);
 	}

@@ -48,7 +48,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private LogoutSuccessHandler logoutSuccessHandler;
 	@Autowired
-	private ValidateCodeRepository validateCodeRepository;
+	private ValidateCodeRepository sessionCodeRepository;
 	
 	
 
@@ -82,11 +82,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		//图片验证码
-		 ValidateCodeFiler validateCodeFiler = new ValidateCodeFiler(); 
+		 ValidateCodeFiler validateCodeFiler = new ValidateCodeFiler(sessionCodeRepository); 
 		 validateCodeFiler.setYichaoAuthenticationFailuHandler(yichaoAuthenticationFailuHandler);
 		 validateCodeFiler.setSecurityPeoperties(securityPeoperties);
+		 validateCodeFiler.afterPropertiesSet();
 		 //短信验证码 浏览器基于session开发
-		 SmsValidateCodeFiler smsValidateCodeFiler = new SmsValidateCodeFiler(validateCodeRepository); 
+		 SmsValidateCodeFiler smsValidateCodeFiler = new SmsValidateCodeFiler(sessionCodeRepository); 
 		 smsValidateCodeFiler.setYichaoAuthenticationFailuHandler(yichaoAuthenticationFailuHandler);
 		 smsValidateCodeFiler.setSecurityPeoperties(securityPeoperties);
 		 //调用前置方法
