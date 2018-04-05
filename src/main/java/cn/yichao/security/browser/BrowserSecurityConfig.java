@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import cn.yichao.security.browser.session.YichaoSessionInformationExpiredStrategy;
 import cn.yichao.security.core.authentication.mobile.SmsAuthentioncationSecurityConfig;
+import cn.yichao.security.core.authorize.AuthorizeConfigManager;
 import cn.yichao.security.core.constant.ProjectConstant;
 import cn.yichao.security.core.properties.SecurityPeoperties;
 import cn.yichao.security.core.vlidate.ValidateCodeRepository;
@@ -49,7 +50,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	private LogoutSuccessHandler logoutSuccessHandler;
 	@Autowired
 	private ValidateCodeRepository sessionCodeRepository;
-	
+	@Autowired
+	private  AuthorizeConfigManager authorizeConfigManager;
 	
 
 	/**
@@ -133,19 +135,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 				//.logoutSuccessUrl(logoutSuccessUrl)
 				.logoutSuccessHandler(logoutSuccessHandler)
 		 	.and()
-			 	.authorizeRequests()
-			 	.antMatchers(ProjectConstant.LOGIN_JUMP_CONTROLLER
-			 			,securityPeoperties.getBrowser().getLoginPage()
-			 			,ProjectConstant.VALIDATE_URI_PREFIX + "*"
-			 			,securityPeoperties.getBrowser().getSignUpUrl()
-			 			,securityPeoperties.getSession().getSessoinInvalidPage()
-			 			,"/user/register","/social/user")
-			 	.permitAll()
-			 	.anyRequest()
-			 	.authenticated()
+		 	.apply(smsAuthentioncationSecurityConfig)
 		 	.and()
 		 		.csrf()
-		 		.disable()
-		 	.apply(smsAuthentioncationSecurityConfig);//加入手机验证码
+		 		.disable();//加入手机验证码
+		 authorizeConfigManager.config(http.authorizeRequests());
 	}
 }
