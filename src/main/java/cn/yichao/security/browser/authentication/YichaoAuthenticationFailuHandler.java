@@ -1,4 +1,4 @@
-package cn.yichao.security.browser.authentication;
+	package cn.yichao.security.browser.authentication;
 
 import java.io.IOException;
 

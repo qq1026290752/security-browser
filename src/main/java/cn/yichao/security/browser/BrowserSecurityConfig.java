@@ -98,7 +98,6 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 		 	.addFilterBefore(validateCodeFiler, UsernamePasswordAuthenticationFilter.class)
 		 	.addFilterBefore(smsValidateCodeFiler, UsernamePasswordAuthenticationFilter.class)
 		 	.formLogin()
-		 		 
 			 	.loginPage(ProjectConstant.LOGIN_JUMP_CONTROLLER)
 			 	.loginProcessingUrl(ProjectConstant.LOGIN_URL)
 			 	.successHandler(yichaoAuthenticationSuccessHandler)

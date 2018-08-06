@@ -17,10 +17,14 @@
 			<version>${yichao.security.version}</version>
 		</dependency>
 		<!--spring session  -->
-		<dependency>
+<!-- 		<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session</artifactId>
-		</dependency>
-
+			<version>2.0.5.RELEASE</version>
+		</dependency> -->
+ 		<dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
 	</dependencies>
 </project>
